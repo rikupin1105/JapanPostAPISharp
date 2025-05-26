@@ -1,6 +1,6 @@
-using JPZipSharp.Extensions;
+using JapanPostAPISharp.Extensions;
 
-namespace JPZipSharp.ASPNETSample
+namespace JapanPostAPISharp.ASPNETSample
 {
     public class Program
     {

@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using JapanPostAPISharp;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace JPZipSharp.Extensions
+namespace JapanPostAPISharp.Extensions
 {
     public static class JapanPostApiServiceCollectionExtensions
     {

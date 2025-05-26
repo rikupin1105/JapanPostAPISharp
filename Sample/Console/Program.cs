@@ -1,21 +1,28 @@
-﻿using JPZipSharp;
-using JPZipSharp.Model;
-
-namespace JPZipSharp.Sample
+﻿namespace JapanPostAPISharp.Sample
 {
     internal class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             var client = new JapanPostApiClient("cliendId", "clientSecret");
 
-            var s = client.SearchCodeAsync("1000001").Result;
+            var s = await client.SearchCodeAsync("1000001");
 
+            if (s == null)
+            {
+                Console.WriteLine("No results found.");
+                return;
+            }
+            if (s.Addresses is null)
+            {
+                Console.WriteLine("No addresses found.");
+                return;
+            }
             foreach (var address in s.Addresses)
             {
-                Console.WriteLine($"Prefecture: {address.pref_name}");
-                Console.WriteLine($"City: {address.city_name}");
-                Console.WriteLine($"Town: {address.town_name}");
+                Console.WriteLine($"Prefecture: {address.PrefName}");
+                Console.WriteLine($"City: {address.CityName}");
+                Console.WriteLine($"Town: {address.TownName}");
                 Console.WriteLine();
             }
         }

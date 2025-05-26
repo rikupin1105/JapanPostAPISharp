@@ -1,22 +1,12 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using JPZipSharp.ASPNETSample.Models;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using JapanPostAPISharp.ASPNETSample.Models;
 
-namespace JPZipSharp.ASPNETSample.Controllers;
+namespace JapanPostAPISharp.ASPNETSample.Controllers;
 
-public class HomeController : Controller
+public class HomeController(ILogger<HomeController> logger, IJapanPostApiClient japanPostApiClient) : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly IJapanPostApiClient _japanPostApiClient;
-
-    public HomeController(ILogger<HomeController> logger,IJapanPostApiClient japanPostApiClient)
-    {
-        _japanPostApiClient = japanPostApiClient;
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
         return View();
@@ -25,7 +15,7 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<string> Address(string Code)
     {
-        var responce = await _japanPostApiClient.SearchCodeAsync(Code);
+        var responce = await japanPostApiClient.SearchCodeAsync(Code);
         var json = JsonSerializer.Serialize(responce.Addresses[0]);
         Console.WriteLine(json);
         return json;

@@ -1,4 +1,4 @@
-namespace JPZipSharp.ASPNETSample.Models
+namespace JapanPostAPISharp.ASPNETSample.Models
 {
     public class ErrorViewModel
     {

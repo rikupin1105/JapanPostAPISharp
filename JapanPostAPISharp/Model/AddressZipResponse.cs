@@ -1,12 +1,24 @@
-﻿namespace JPZipSharp.Model
+﻿using System.Text.Json.Serialization;
+
+namespace JapanPostAPISharp.Model
 {
     public class AddressZipResponse
     {
-        public int level { get; set; }
-        public int page { get; set; }
-        public int limit { get; set; }
-        public int count { get; set; }
-        public Address[] addresses { get; set; }
+        [JsonPropertyName("level")]
+        public int Level { get; set; }
+
+        [JsonPropertyName("page")]
+        public int Page { get; set; }
+
+        [JsonPropertyName("limit")]
+        public int Limit { get; set; }
+
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+
+        [JsonPropertyName("addresses")]
+        public AddressArray[]? Addresses { get; set; }
     }
+
 
 }

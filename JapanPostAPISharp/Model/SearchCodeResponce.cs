@@ -1,13 +1,13 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace JPZipSharp.Model
+namespace JapanPostAPISharp.Model
 {
     public class SearchCodeResponce
     {
         [JsonPropertyName("addresses")]
-        public Address[] Addresses { get; set; }
+        public AddressArray[]? Addresses { get; set; }
         [JsonPropertyName("searchtype")]
-        public string Searchtype { get; set; }
+        public string? Searchtype { get; set; }
         [JsonPropertyName("limit")]
         public int Limit { get; set; }
         [JsonPropertyName("count")]

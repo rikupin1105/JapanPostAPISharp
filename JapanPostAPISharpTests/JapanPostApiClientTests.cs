@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
+﻿using JapanPostAPISharp;
+using System.Diagnostics;
 
-namespace JPZipSharp.Tests
+namespace JapanPostAPISharpTests
 {
     [TestClass()]
     public class JapanPostApiClientTests
@@ -14,7 +15,7 @@ namespace JPZipSharp.Tests
 
             var r = await client.SearchCodeAsync("A7E2FK2");
 
-            Assert.AreEqual(r.Addresses[0].pref_name, "東京都");
+            Assert.AreEqual(r.Addresses[0].PrefName, "東京都");
         }
     }
 }

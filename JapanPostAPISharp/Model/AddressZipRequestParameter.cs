@@ -1,4 +1,4 @@
-﻿namespace JPZipSharp.Model
+﻿namespace JapanPostAPISharp.Model
 {
     public class AddressZipRequestParameter
     {

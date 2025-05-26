@@ -1,9 +1,9 @@
-﻿using JPZipSharp.Model;
+﻿using JapanPostAPISharp.Model;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
-namespace JPZipSharp
+namespace JapanPostAPISharp
 {
     public class JapanPostApiClient : IJapanPostApiClient
     {
@@ -13,19 +13,15 @@ namespace JPZipSharp
 
         public JapanPostApiClient(string clientId, string clientSecret, string baseUrl = "https://api.da.pf.japanpost.jp/api/v1/", HttpClient? httpClient = null)
         {
-            _options = new JapanPostApiOptions
-            {
-                ClientId = clientId,
-                ClientSecret = clientSecret,
-                BaseUrl = baseUrl
-            };
-            if(httpClient != null)
+            _options = new JapanPostApiOptions(clientId, clientSecret, baseUrl);
+
+            if (httpClient != null)
                 _httpClient = httpClient;
             else
                 _httpClient = new HttpClient();
         }
 
-        public async Task<SearchCodeResponce> SearchCodeAsync(string serachCode, string ecuid = "", int page = 1, int limit = 1, int choikittype = 1, int searchtype = 1)
+        public async Task<SearchCodeResponce?> SearchCodeAsync(string serachCode, string ecuid = "", int page = 1, int limit = 1, int choikittype = 1, int searchtype = 1)
         {
             if (_token is null)
                 await GetToken();
@@ -51,7 +47,7 @@ namespace JPZipSharp
                 throw new Exception(content);
             }
         }
-        public async Task<AddressZipResponse> AddressZip(AddressZipRequestParameter addressZipRequestParameter, string ecuid)
+        public async Task<AddressZipResponse?> AddressZip(AddressZipRequestParameter addressZipRequestParameter, string ecuid)
         {
             if (_token is null)
                 await GetToken();
@@ -95,10 +91,10 @@ namespace JPZipSharp
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{_options.BaseUrl}j/token")
+                RequestUri = new Uri($"{_options.BaseUrl}j/token"),
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
             };
-            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-            
+
             //何故かUAを入れないと403になる。ローカル環境だから？
             request.Headers.UserAgent.ParseAdd("JapanPostApiClient");
             var response = await _httpClient.SendAsync(request);
@@ -106,7 +102,7 @@ namespace JPZipSharp
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(content);
+                var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(content) ?? throw new Exception("Token is null");
                 _token = tokenResponse.Token;
             }
             else
