@@ -9,8 +9,8 @@ namespace JPZipSharp.Tests
         public async Task SearchCodeTestAsync()
         {
             var client = new JapanPostApiClient(
-                "b46cd53f6e0e4a19bff044dd97bb1b2f",
-                "35be0e1db3d54ef7adcdcc689f631090");
+                Environment.GetEnvironmentVariable("CliendId"),
+                Environment.GetEnvironmentVariable("ClientSecret"));
 
             var r = await client.SearchCodeAsync("A7E2FK2");
 
