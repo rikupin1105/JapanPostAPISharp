@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35828.75
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JapanPostAPISharp", "JapanPostAPISharp\JapanPostAPISharp.csproj", "{278FE7F1-6CC5-43C8-B88F-155D75EFA93D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JapanPostAPISharpTests", "JapanPostAPISharpTests\JapanPostAPISharpTests.csproj", "{A83190A1-21E0-490E-B652-6F0597C41C70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JapanPostAPISharp.Sample", "Sample\Console\JapanPostAPISharp.Sample.csproj", "{758AED6C-81AF-424D-9851-C20877A45BD5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{278FE7F1-6CC5-43C8-B88F-155D75EFA93D} = {278FE7F1-6CC5-43C8-B88F-155D75EFA93D}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JapanPostAPISharp.ASPNETSample", "Sample\ASPNET\JapanPostAPISharp.ASPNETSample.csproj", "{4722A834-C942-4DC1-B10C-93D536AE0C4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JapanPostAPISharp.Extensions", "JapanPostAPISharp.Extensions\JapanPostAPISharp.Extensions.csproj", "{42A9B331-D795-4C7C-980F-E1C31AC55218}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{278FE7F1-6CC5-43C8-B88F-155D75EFA93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{278FE7F1-6CC5-43C8-B88F-155D75EFA93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{278FE7F1-6CC5-43C8-B88F-155D75EFA93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{278FE7F1-6CC5-43C8-B88F-155D75EFA93D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A83190A1-21E0-490E-B652-6F0597C41C70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A83190A1-21E0-490E-B652-6F0597C41C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A83190A1-21E0-490E-B652-6F0597C41C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A83190A1-21E0-490E-B652-6F0597C41C70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{758AED6C-81AF-424D-9851-C20877A45BD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{758AED6C-81AF-424D-9851-C20877A45BD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{758AED6C-81AF-424D-9851-C20877A45BD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{758AED6C-81AF-424D-9851-C20877A45BD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4722A834-C942-4DC1-B10C-93D536AE0C4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4722A834-C942-4DC1-B10C-93D536AE0C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4722A834-C942-4DC1-B10C-93D536AE0C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4722A834-C942-4DC1-B10C-93D536AE0C4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42A9B331-D795-4C7C-980F-E1C31AC55218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42A9B331-D795-4C7C-980F-E1C31AC55218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42A9B331-D795-4C7C-980F-E1C31AC55218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42A9B331-D795-4C7C-980F-E1C31AC55218}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {21CBF40E-6E07-4F16-89D7-7A838D836DDE}
+	EndGlobalSection
+EndGlobal
