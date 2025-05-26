@@ -1,0 +1,557 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>住所取得サンプル</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+            input[type="text"]:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            }
+
+            button:active {
+                transform: translateY(0);
+            }
+
+            button:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+                transform: none;
+                box-shadow: none;
+            }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @@keyframes spin {
+            0%
+
+        {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+
+        }
+
+        .note {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border: 2px solid #e1e5e9;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+            .result-section.show {
+                display: block;
+            }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+            .result-header .icon {
+                font-size: 24px;
+                margin-right: 10px;
+            }
+
+        .address-display {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .address-display::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+
+        .address-info {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+
+            .info-row:last-child {
+                border-bottom: none;
+            }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+            min-width: 120px;
+            font-size: 14px;
+        }
+
+        .info-value {
+            color: #333;
+            flex: 1;
+            font-size: 16px;
+        }
+
+        .main-address {
+            font-weight: 700;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .coordinates {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .zip-code-display {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .address-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            word-break: break-all;
+        }
+
+        .copy-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+            .copy-button:hover {
+                background: #218838;
+                transform: translateY(-1px);
+            }
+
+        .clear-button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+            .clear-button:hover {
+                background: #c82333;
+                transform: translateY(-1px);
+            }
+
+        @@keyframes slideIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border: 1px solid #c3e6cb;
+            font-size: 14px;
+            display: none;
+        }
+
+            .success-message.show {
+                display: block;
+                animation: fadeIn 0.3s ease-out;
+            }
+
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 住所検索</h1>
+
+        <div class="form-group">
+            <label for="zipCode">郵便番号またはデジタルアドレスを入力してください：</label>
+            <input type="text" id="zipCode" placeholder="例: 1000001 または ABC12D6" maxlength="10">
+        </div>
+
+        <button onclick="fetchAddress()">住所を取得</button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div>住所を取得中...</div>
+        </div>
+
+        <div class="note">
+            <strong>使用方法：</strong><br>
+            郵便番号（7桁）またはデジタルアドレス（英数字7桁）を入力して「住所を取得」ボタンをクリックしてください。<br>
+            取得した住所は下に表示されます。<br><br>
+            <strong>入力例：</strong><br>
+            • 郵便番号: 1000001<br>
+            • デジタルアドレス: ABC12D6
+        </div>
+
+        <!-- 住所表示セクション -->
+        <div class="result-section" id="resultSection">
+            <div class="result-header">
+                <span class="icon">📍</span>
+                検索結果
+            </div>
+            <div class="address-display">
+                <div class="address-info" id="addressInfo">
+                    <!-- 住所情報がここに表示されます -->
+                </div>
+                <button class="copy-button" onclick="copyAddress()">
+                    📋 住所をコピー
+                </button>
+                <button class="clear-button" onclick="clearResult()">
+                    🗑️ クリア
+                </button>
+                <div class="success-message" id="successMessage">
+                    住所がクリップボードにコピーされました！
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // エンドポイントのURL（実際のAPIのURLに変更してください）
+        const API_BASE_URL = 'https://localhost:7187/Home'; // ← ここを実際のAPIのURLに変更
+
+        async function fetchAddress() {
+            const code = document.getElementById('zipCode').value.trim().toUpperCase();
+            const button = document.querySelector('button');
+            const loading = document.getElementById('loading');
+
+            // バリデーション
+            if (!code) {
+                alert('郵便番号またはデジタルアドレスを入力してください');
+                return;
+            }
+
+            // 入力形式の判定とバリデーション
+            const isZipCode = /^\d{7}$/.test(code);
+            const isDigitalAddress = /^[A-Z0-9]{7}$/.test(code);
+
+            if (!isZipCode && !isDigitalAddress) {
+                alert('正しい形式で入力してください');
+                return;
+            }
+
+            // ローディング開始
+            button.disabled = true;
+            loading.style.display = 'block';
+
+            try {
+                // APIエンドポイントを呼び出し
+                const response = await fetch(`${API_BASE_URL}/Address?Code=${code}`, {
+                    method: 'GET'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // レスポンスをJSONとして取得
+                const addressData = await response.json();
+
+                // 取得した住所データを画面に表示
+                displayAddress(code, addressData, isZipCode);
+
+            } catch (error) {
+                console.error('Error fetching address:', error);
+
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    alert('ネットワークエラーが発生しました。インターネット接続を確認してください。');
+                } else if (error.message.includes('404')) {
+                    alert('該当する住所が見つかりませんでした。');
+                } else if (error.message.includes('500')) {
+                    alert('サーバーエラーが発生しました。しばらく後でお試しください。');
+                } else {
+                    alert('住所の取得に失敗しました: ' + error.message);
+                }
+            } finally {
+                // ローディング終了
+                button.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        // Enterキーでも実行できるように
+        document.getElementById('zipCode').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                fetchAddress();
+            }
+        });
+
+        // 英数字のみ入力を許可（大文字に自動変換）
+        document.getElementById('zipCode').addEventListener('input', function(e) {
+            // 英数字のみ許可し、英字は大文字に変換
+            e.target.value = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+        });
+
+        // 住所を画面に表示する関数
+        function displayAddress(code, addressData, isZipCode = false) {
+            const resultSection = document.getElementById('resultSection');
+            const addressInfo = document.getElementById('addressInfo');
+
+            // 住所情報のHTMLを構築
+            let html = '';
+
+            // デジタルアドレスコード表示（レスポンスにある場合）
+            if (addressData.dgacode != null) {
+                html += `<div class="info-row">
+                    <div class="info-label">デジタルアドレス:</div>
+                    <div class="info-value">${addressData.dgacode}</div>
+                </div>`;
+            }
+
+            // 郵便番号表示（レスポンスにある場合）
+            if (addressData.zip_code != null) {
+                html += `<div class="info-row">
+                    <div class="info-label">郵便番号:</div>
+                    <div class="info-value">〒${addressData.zip_code.substring(0,3)}-${addressData.zip_code.substring(3)}</div>
+                </div>`;
+            }
+
+            // メイン住所表示
+            let mainAddress = '';
+            if (addressData.address != null) {
+                mainAddress = addressData.address;
+            } else {
+                // addressフィールドがない場合は組み立て
+                mainAddress = [
+                    addressData.pref_name,
+                    addressData.city_name,
+                    addressData.town_name,
+                    addressData.block_name,
+                    addressData.biz_name
+                ].filter(item => item && item.trim() !== '').join('');
+            }
+
+            html += `<div class="info-row">
+                <div class="info-label">住所:</div>
+                <div class="info-value main-address">${mainAddress}</div>
+            </div>`;
+
+            addressInfo.innerHTML = html;
+
+            console.log(addressData);
+
+            // グローバル変数に住所を保存（コピー用）
+            window.currentAddress = mainAddress;
+
+            // 結果セクションを表示
+            resultSection.classList.add('show');
+
+            // 結果セクションまでスクロール
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 住所をクリップボードにコピーする関数
+        async function copyAddress() {
+            const addressText = window.currentAddress || '';
+            const successMessage = document.getElementById('successMessage');
+
+            if (!addressText) {
+                alert('コピーする住所がありません');
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(addressText);
+
+                // 成功メッセージを表示
+                successMessage.classList.add('show');
+
+                // 3秒後にメッセージを非表示
+                setTimeout(() => {
+                    successMessage.classList.remove('show');
+                }, 3000);
+
+            } catch (err) {
+                // フォールバック: 古いブラウザ対応
+                const textArea = document.createElement('textarea');
+                textArea.value = addressText;
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    document.execCommand('copy');
+                    successMessage.classList.add('show');
+                    setTimeout(() => {
+                        successMessage.classList.remove('show');
+                    }, 3000);
+                } catch (fallbackErr) {
+                    alert('コピーに失敗しました。手動で選択してコピーしてください。');
+                }
+
+                document.body.removeChild(textArea);
+            }
+        }
+
+        // 結果をクリアする関数
+        function clearResult() {
+            const resultSection = document.getElementById('resultSection');
+            const zipCodeInput = document.getElementById('zipCode');
+
+            resultSection.classList.remove('show');
+            zipCodeInput.value = '';
+            zipCodeInput.focus();
+        }
+    </script>
+</body>
+</html>
